@@ -1,0 +1,5 @@
+{
+  "name": "Ghost-Hunter-Agent",
+  "description": "An enterprise-grade cloud resource retirement engine with strict governance, multi-agent logic (Triage, Validation, Negotiation, Execution), and append-only audit logging.",
+  "requestFramePermissions": []
+}

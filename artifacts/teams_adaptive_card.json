@@ -1,0 +1,52 @@
+
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Ghost-Hunter: Idle Resource Detected",
+      "weight": "Bolder",
+      "size": "Medium",
+      "color": "Attention"
+    },
+    {
+      "type": "TextBlock",
+      "text": "The following resource has been idle for ${lastAccessDays} days. Governance policy requires retirement.",
+      "wrap": true
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        { "title": "Resource:", "value": "${resourceId}" },
+        { "title": "Type:", "value": "${resourceType}" },
+        { "title": "Account:", "value": "${account}" },
+        { "title": "Monthly Cost:", "value": "$${monthlyCost}" }
+      ]
+    },
+    {
+      "type": "Input.Text",
+      "id": "reason",
+      "placeholder": "If keeping, please provide a reason...",
+      "isMultiline": true
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Proceed with Retirement",
+      "data": { "ghAction": "PROCEED" }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Defer (30 Days)",
+      "data": { "ghAction": "DEFER_30" }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Keep Resource",
+      "data": { "ghAction": "KEEP" }
+    }
+  ]
+}
