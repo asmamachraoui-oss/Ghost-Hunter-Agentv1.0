@@ -1,28 +1,30 @@
+# Ghost-Hunter Agent (MVP)
 
-# Ghost-Hunter CLI Prototype
-
-Welcome to the Ghost-Hunter Proof of Concept. This repo demonstrates an enterprise cloud retirement workflow managed by automated agents and strict governance policies.
+Welcome to the Ghost-Hunter Agent prototype. This repository demonstrates a governed, end-to-end cloud resource retirement workflow using automated agents with human-in-the-loop controls and safety guardrails.
 
 ## What to open first
-1. **App.tsx**: View the "Ghost-Hunter Command Center" where you can simulate flows.
-2. **src/negotiate.ts**: Review the core logic for Prod vs Non-Prod governance.
-3. **src/execute.ts**: See the "Snapshot-First" safety gate logic.
+1. **SYSTEM_PROMPT.md**: Core Ghost-Hunter agent rules, governance boundaries, and failure behavior.
+2. **src/negotiate.ts**: Human-in-the-loop logic for Prod vs Non-Prod decisions.
+3. **src/execute.ts**: Snapshot-first safety gate and gated execution logic.
+4. **App.tsx**: Optional UI used to simulate agent flows and scenarios.
 
-## How to run
-This is a React-based simulation dashboard of the Node.js logic. 
-- The UI allows you to edit the "Event JSON" (Cloud Resource Metadata).
-- You can toggle `DRY_RUN` and `Simulate Fail` (to test the snapshot safety gate).
-- Click **Execute Agent Flow** to see the canonical output and audit logs.
+## How it works
+This project includes a lightweight simulation interface to demonstrate the Ghost-Hunter Agent behavior.
+- Cloud resource metadata is provided as Event JSON.
+- The agent evaluates governance rules and safety signals.
+- Human approval is simulated based on environment and owner response.
+- Execution is always snapshot-first and gated by approvals.
+- All decisions and actions are written to audit logs.
 
 ## Example Scenarios
-1. **Non-Prod Silent Success**: Use `env: "non-prod"` and leave `Simulated Owner Action` as default. Decision should be `PROCEED` (Silent Approval).
-2. **Prod Silent Escalation**: Use `env: "prod"` and leave `Simulated Owner Action` as default. Decision should be `ESCALATE`.
-3. **Snapshot Failure**: Toggle `Simulate Fail`. The agent will abort retirement and change decision to `DEFER`.
-4. **Change Freeze**: Set `context.freezeWindow: true` in the JSON. The agent will immediately `DEFER`.
+1. **Non-Prod Silent Success**: Use `env: "non-prod"` and leave owner action empty. Decision should be `PROCEED` after silent approval.
+2. **Prod Silent Escalation**: Use `env: "prod"` with no owner response. Decision should be `ESCALATE` (no execution).
+3. **Snapshot Failure**: Enable snapshot failure simulation. The agent aborts retirement and returns `DEFER`.
+4. **Change Freeze**: Set `context.freezeWindow: true`. The agent immediately defers and takes no action.
 
 ## Architecture Mapping
-- **Triage Agent**: `src/triage.ts` (Guardrail checking).
-- **Validation Agent**: `src/validate.ts` (Zod contract enforcement).
-- **Negotiation Agent**: `src/negotiate.ts` (Human-in-the-loop logic).
-- **Execution Agent**: `src/execute.ts` (Snapshot -> Retire logic).
-- **Audit Logs**: `src/audit.ts` (Append-only storage).
+- **Triage Agent**: `src/triage.ts` (resource filtering and context checks)
+- **Validation Agent**: `src/validate.ts` (policy and contract enforcement)
+- **Negotiation Agent**: `src/negotiate.ts` (human-in-the-loop logic)
+- **Execution Agent**: `src/execute.ts` (snapshot → verify → retire workflow)
+- **Audit Logs**: `src/audit.ts` (append-only decision and action logging)
